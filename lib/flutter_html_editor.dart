@@ -137,6 +137,7 @@ class FlutterHtmlEditorState extends State<FlutterHtmlEditor> {
           if (isi.isEmpty ||
               isi == "<p></p>" ||
               isi == "<p><br></p>" ||
+              isi == "<br>" ||
               isi == "<p><br/></p>") {
             isi = "";
           }
@@ -146,27 +147,21 @@ class FlutterHtmlEditorState extends State<FlutterHtmlEditor> {
         });
   }
 
+  Future<bool> isEmpty() async {
+    final result = await _controller
+        .evaluateJavascript('\$("#summernote").summernote("isEmpty")');
+    return result == 'true';
+  }
+
   Future<String> getText() async {
     await _controller.evaluateJavascript(
-        "GetTextSummernote.postMessage(document.getElementsByClassName('note-editable')[0].innerHTML);");
+        "GetTextSummernote.postMessage(\$('#summernote').summernote('code'));");
     return text;
   }
 
   setText(String v) async {
-    String txtIsi = v
-        .replaceAll("'", '\\"')
-        .replaceAll('"', '\\"')
-        .replaceAll("[", "\\[")
-        .replaceAll("]", "\\]")
-        .replaceAll("\n", "<br/>")
-        .replaceAll("\n\n", "<br/>")
-        .replaceAll("\r", " ")
-        .replaceAll('\r\n', " ");
-    String txt =
-        "document.getElementsByClassName('note-editable')[0].innerHTML = '" +
-            txtIsi +
-            "';";
-    _controller.evaluateJavascript(txt);
+    String insertHTML = "\$('#summernote').summernote('code', '$v');";
+    _controller.evaluateJavascript(insertHTML);
   }
 
   setFullContainer() {
@@ -180,11 +175,6 @@ class FlutterHtmlEditorState extends State<FlutterHtmlEditor> {
 
   setEmpty() {
     _controller.evaluateJavascript("\$('#summernote').summernote('reset');");
-  }
-
-  setHint(String text) {
-    String hint = '\$(".note-placeholder").html("$text");';
-    _controller.evaluateJavascript(hint);
   }
 
   initEditor() {
