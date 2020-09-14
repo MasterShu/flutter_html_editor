@@ -193,7 +193,7 @@ class FlutterHtmlEditorState extends State<FlutterHtmlEditor> {
             "toolbar: [" +
             "['style', ['style']]," +
             "['font', ['bold', 'underline', 'italic', 'clear']]," +
-            "['color', ['color']]," +
+            // "['color', ['color']]," +
             "['para', ['ul', 'ol', 'paragraph']]," +
             // "['insert', ['link', 'hr']]," +
             "['view', ['codeview']]," +
