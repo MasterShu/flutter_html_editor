@@ -10,7 +10,7 @@ Add package to your project
 dependencies:
   flutter_html_editor:
     git:
-    url: ../../opensource/flutter_html_editor/flutter_html_editor
+    url: https://github.com/MasterShu/flutter_html_editor.git
 ```
 
 This project is a starting point for a Dart
